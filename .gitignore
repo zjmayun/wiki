@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+/.mvn/wrapper/MavenWrapperDownloader.java
+/src/test/java/com/jackey/wikistudy/WikistudyApplicationTests.java
+/.mvn/wrapper/maven-wrapper.properties
+/.mvn/wrapper/maven-wrapper.jar
+/mvnw
+/mvnw.cmd
