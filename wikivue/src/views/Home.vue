@@ -84,11 +84,9 @@ export default defineComponent({
     const listData: Record<string, string>[] = [];
 
     onMounted(() => {
-      console.log("onMouted");
       axios.get("/ebook/list").then((response) =>{
         const data = response.data;
         ebooks.value = data.content;
-        console.log(response);
       })
     })
 
