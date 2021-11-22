@@ -1,5 +1,4 @@
 <template>
-  <div class="home">
     <a-layout>
       <a-layout-sider width="200" style="background: #fff">
         <a-menu
@@ -46,15 +45,31 @@
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
-      <a-layout style="padding: 0 24px 24px">
-        <a-layout-content
-            :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
-        >
-          <pre>{{ebooks}}}</pre>
-        </a-layout-content>
-      </a-layout>
     </a-layout>
-  </div>
+    <a-layout style="padding: 0 24px 24px">
+      <a-layout-content
+          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+      >
+        <a-list item-layout="vertical" size="large" :pagination="pagination" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks" >
+          <template #renderItem="{ item }">
+            <a-list-item key="item.title">
+              <template #actions>
+          <span v-for="{ type, text } in actions" :key="type">
+            <component v-bind:is="type" style="margin-right: 8px" />
+            {{ text }}
+          </span>
+              </template>
+              <a-list-item-meta :description="item.description">
+                <template #title>
+                  <a :href="item.href">{{ item.title }}</a>
+                </template>
+                <template #avatar><a-avatar :src="item.avatar" /></template>
+              </a-list-item-meta>
+            </a-list-item>
+          </template>
+        </a-list>
+      </a-layout-content>
+    </a-layout>
 </template>
 
 <script lang="ts">
@@ -66,10 +81,11 @@ export default defineComponent({
   setup() {
     console.log("setup");
     const ebooks = ref();
+    const listData: Record<string, string>[] = [];
 
     onMounted(() => {
       console.log("onMouted");
-      axios.get("http://localhost:8080/ebook/list?name=go").then((response) =>{
+      axios.get("http://localhost:8080/ebook/list").then((response) =>{
         const data = response.data;
         ebooks.value = data.content;
         console.log(response);
@@ -77,8 +93,28 @@ export default defineComponent({
     })
 
     return {
-      ebooks
+      ebooks,
+      pagination: {
+        onChange: (page: number) => {
+          console.log(page);
+        },
+        pageSize: 3,
+      },
+      actions: [
+        { type: 'StarOutlined', text: '156' },
+        { type: 'LikeOutlined', text: '156' },
+        { type: 'MessageOutlined', text: '2' },
+      ]
     }
   }
 });
 </script>
+<style scoped>
+.ant-avatar {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8%;
+  margin: 5px 0;
+}
+</style>
