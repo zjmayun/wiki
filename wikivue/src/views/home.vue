@@ -81,7 +81,6 @@ export default defineComponent({
   setup() {
     console.log("setup");
     const ebooks = ref();
-    const listData: Record<string, string>[] = [];
 
     onMounted(() => {
       axios.get("/ebook/list").then((response) =>{
